@@ -135,7 +135,7 @@ const sendVerificationEmail = async (email: string, req: Request): Promise<void>
 		await userRepository.update(user._id, { emailVerificationToken: verificationToken });
 	}
 
-	const link = `${req.protocol}://${req.get('host')}/verify-account?token=${verificationToken}`;
+	const link = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-account?token=${verificationToken}`;
 
 	const emailData: WelcomeEmailData = {
 		to: email,

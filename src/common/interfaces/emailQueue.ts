@@ -15,25 +15,25 @@ export interface LoginEmailData extends CommonDataFields {
 export interface CreditAlertEmailData extends CommonDataFields {
 	name: string;
 	date: string;
-    amount: number;
-    description: string;
-    currency: string;
-    accountNumber: string;
-    transactionReference: string;
-    transactionType: string;
-    balance: number;
+	amount: number;
+	description: string;
+	currency: string;
+	accountNumber: string;
+	transactionReference: string;
+	transactionType: string;
+	balance: number;
 }
 
 export interface DebitAlertEmailData extends CommonDataFields {
 	name: string;
 	date: string;
-    amount: number;
-    description: string;
-    currency: string;
-    accountNumber: string;
-    transactionReference: string;
-    transactionType: string;
-    balance: number;
+	amount: number;
+	description: string;
+	currency: string;
+	accountNumber: string;
+	transactionReference: string;
+	transactionType: string;
+	balance: number;
 }
 
 export interface TransferEmailData extends CommonDataFields {
@@ -61,9 +61,9 @@ export interface PasswordResetSuccessfulData extends CommonDataFields {
 export type EmailJobData =
 	| { type: 'welcomeEmail'; data: WelcomeEmailData }
 	| { type: 'loginEmail'; data: LoginEmailData }
-    | { type: 'creditEmail'; data: CreditAlertEmailData }
-    | { type: 'debitEmail'; data: DebitAlertEmailData }
-    | { type: 'transferEmail'; data: TransferEmailData }
-    | { type: 'compromisedEmail'; data: CompromisedEmailData }
+	| { type: 'creditEmail'; data: CreditAlertEmailData }
+	| { type: 'debitEmail'; data: DebitAlertEmailData }
+	| { type: 'transferEmail'; data: TransferEmailData }
+	| { type: 'compromisedEmail'; data: CompromisedEmailData }
 	| { type: 'resetPassword'; data: ResetPasswordData }
 	| { type: 'passwordResetSuccessful'; data: PasswordResetSuccessfulData };
