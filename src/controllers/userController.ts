@@ -4,6 +4,7 @@ import { beneficiaryRepository } from '@/repository/beneficiaryRepository';
 import { transactionRepository } from '@/repository/transactionRepository';
 import { userRepository } from '@/repository/userRepository';
 import { Request, Response } from 'express';
+import geoip from 'geoip-lite';
 
 class UserController {
 	getProfile = catchAsync(async (req: Request, res: Response) => {
@@ -131,7 +132,28 @@ class UserController {
 			throw new AppError('Insufficient funds', 400);
 		}
 
-		const transaction = await userRepository.transferFunds(sender._id, accountNumber, amount, isBeneficiary);
+		const ip = req.ip || req.socket.remoteAddress || '';
+		const geo = geoip.lookup(ip);
+		const userRegion = geo ? geo.country : 'US';
+		const timeZone = geo ? geo.timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
+		const formattedDate = new Date().toLocaleString(`en-${userRegion}`, {
+			weekday: 'long',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
+			second: '2-digit',
+			timeZone: timeZone,
+		});
+
+		const transaction = await userRepository.transferFunds(
+			sender._id,
+			accountNumber,
+			amount,
+			isBeneficiary,
+			formattedDate
+		);
 
 		if (!transaction) {
 			throw new AppError('Failed to transfer funds', 400);

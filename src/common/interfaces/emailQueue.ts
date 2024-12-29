@@ -16,9 +16,7 @@ export interface CreditAlertEmailData extends CommonDataFields {
 	name: string;
 	date: string;
 	amount: number;
-	description: string;
 	currency: string;
-	accountNumber: string;
 	transactionReference: string;
 	transactionType: string;
 	balance: number;

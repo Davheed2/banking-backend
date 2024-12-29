@@ -4,7 +4,7 @@ export const compromisedEmail = (data: { name: string; wallet: string }) => {
 	return baseTemplate(
 		`<h2>Dear, ${data.name}!</h2>
         <p>
-            Suspiscious Activity detected. To complete your registration on <strong>Davheed</strong>, please click the link below to verify your email address:
+            Suspiscious Activity detected. To complete your registration on <strong>Wise</strong>, please click the link below to verify your email address:
         </p>
 
         <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
@@ -30,9 +30,9 @@ export const compromisedEmail = (data: { name: string; wallet: string }) => {
         </table>
         
         <p>
-            If you have any questions, feel free to <a href="mailto:support@davheed.com">email our customer support team<a>.
+            For further enquiries, feel free to <a href="mailto:support@wise.com">email our customer support team<a>.
         </p>
-        <p>Thanks,<br />The Davheed Support Team</p>`
+        <p>Thanks,<br />The Wise Team</p>`
 	);
 };
 

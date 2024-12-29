@@ -1,5 +1,10 @@
 import { IUser, UserMethods } from '@/common/interfaces';
-import { generateRandom6DigitKey, generateUniqueTransactionReference } from '@/common/utils';
+import {
+	generateRandom6DigitKey,
+	generateUniqueTransactionReference,
+	sendCreditAlertEmail,
+	sendDebitAlertEmail,
+} from '@/common/utils';
 import { UserModel } from '@/models';
 import { TransactionModel } from '@/models/transactionModel';
 import { HydratedDocument } from 'mongoose';
@@ -101,28 +106,50 @@ class UserRepository {
 		sender: string,
 		accountNumber: string,
 		amount: number,
-		isBeneficiary: boolean
+		isBeneficiary: boolean,
+		formattedDate: string
 	): Promise<IUser | null> => {
 		const beneficiary = await UserModel.findOneAndUpdate(
 			{ accountNumber },
 			{ $inc: { accountBalance: +amount } },
 			{ new: true }
-		).select('+accountNumber firstName lastName');
+		).select('+accountNumber firstName lastName email accountBalance');
 		const senderB = await UserModel.findOneAndUpdate(
 			{ _id: sender },
 			{ $inc: { accountBalance: -amount } },
 			{ new: true }
-		).select('+accountBalance');
+		).select('+accountBalance email firstName');
 
+		if (!senderB) {
+			throw new Error('Sender not found');
+		}
+		if (!beneficiary) {
+			throw new Error('Beneficiary not found');
+		}
+
+		const reference = generateUniqueTransactionReference();
+		const reference2 = generateUniqueTransactionReference();
+
+		if (senderB) {
+			await TransactionModel.create({
+				senderId: sender,
+				receiverId: beneficiary._id,
+				amount,
+				accountNumber,
+				transactionType: 'transfer',
+				status: 'successful',
+				transactionReference: reference,
+			});
+		}
 		if (beneficiary) {
 			await TransactionModel.create({
 				senderId: sender,
 				receiverId: beneficiary._id,
 				amount,
-				accountNumber: accountNumber,
-				transactionType: 'transfer',
+				accountNumber,
+				transactionType: 'deposit',
 				status: 'successful',
-				transactionReference: generateUniqueTransactionReference(),
+				transactionReference: reference2,
 			});
 
 			if (isBeneficiary) {
@@ -141,6 +168,31 @@ class UserRepository {
 				}
 			}
 		}
+
+		await sendDebitAlertEmail(
+			senderB.email,
+			senderB.firstName,
+			formattedDate,
+			amount,
+			'Transfer',
+			'USD',
+			accountNumber,
+			reference,
+			'debit',
+			senderB.accountBalance
+		);
+		await sendCreditAlertEmail(
+			beneficiary.email,
+			beneficiary.firstName,
+			formattedDate,
+			amount,
+			//'Transfer',
+			'USD',
+			//accountNumber,
+			reference2,
+			'credit',
+			beneficiary.accountBalance
+		);
 
 		return senderB;
 	};

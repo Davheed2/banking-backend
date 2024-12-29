@@ -41,6 +41,6 @@ export const transferEmail = (data: {
         <p>
             If you did not authorize this transfer, kindly contact our <a href="mailto:support@wise.com">customer care support team<a>.
         </p>
-        <p>Thanks,<br />The Davheed Support Team</p>`
+        <p>Thanks,<br />The Wise Team</p>`
 	);
 };

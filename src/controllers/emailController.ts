@@ -53,7 +53,7 @@ class EmailController {
 	});
 
 	sendCreditAlertEmail = catchAsync(async (req: Request, res: Response) => {
-		const { email, name } = req.body;
+		const { email, firstName } = req.body;
 
 		const ip = req.ip || req.socket.remoteAddress || '';
 		// const geo = geoip.lookup("72.229.28.185");
@@ -76,21 +76,19 @@ class EmailController {
 
 		await sendCreditAlertEmail(
 			email,
-			name,
+			firstName,
 			formattedDate,
 			200,
-			'description',
 			'USD',
-			'7488838848',
-			'transactionReference',
-			'successful',
-			3000
+			'TX-1626950730000-4JQJZQ',
+			'credit',
+			3581.21
 		);
 		return AppResponse(res, 200, null, 'Email sent successfully');
 	});
 
 	sendDebitAlertEmail = catchAsync(async (req: Request, res: Response) => {
-		const { email, name } = req.body;
+		const { email, firstName } = req.body;
 		const ip = req.ip || req.socket.remoteAddress || '';
 		// const geo = geoip.lookup("72.229.28.185");
 		const geo = geoip.lookup(ip);
@@ -112,14 +110,14 @@ class EmailController {
 
 		await sendDebitAlertEmail(
 			email,
-			name,
+			firstName,
 			formattedDate,
 			200,
-			'description: string',
+			'description test',
 			'USD',
 			'7488838848',
 			'transactionReference',
-			'successful',
+			'debit',
 			3000
 		);
 		return AppResponse(res, 200, null, 'Email sent successfully');

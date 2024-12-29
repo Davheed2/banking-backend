@@ -4,44 +4,46 @@ export const creditEmail = (data: {
 	name: string;
 	date: string;
 	amount: number;
-	description: string;
 	currency: string;
-	accountNumber: string;
 	transactionReference: string;
 	transactionType: string;
 	balance: number;
 }) => {
 	return baseTemplate(
-		`<h2>Welcome, ${data.name}!</h2>
+		`<h2>Hello ${data.name},</h2>
         <p>
-            We’re thrilled to have you on board. To complete your registration on <strong>Davheed</strong>, please click the link below to verify your email address:
+            This is to notify you of a successful ${data.transactionType} transaction on your account with the following details:
         </p>
 
-        <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
+        <table class="transaction-details" align="center" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin: 20px 0;">
             <tr>
-              <td align="center">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                 <tr>
-                    <td align="center">
-                    <table border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td>
-                                <span style="font-size: 24px; font-weight: bold;">
-                                    ${data.date}
-                                </span>
-                            </td>
-                        </tr>
-                    </table>
-                    </td>
-                 </tr>
-                </table>
-              </td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${data.date}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Amount:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${data.amount.toFixed(2)}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Currency:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${data.currency}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Transaction Reference:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${data.transactionReference}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Balance:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${data.balance.toFixed(2)}</td>
             </tr>
         </table>
         
         <p>
-            If you have any questions, feel free to <a href="mailto:support@davheed.com">email our customer support team<a>.
+            For further enquiries, kindly contact our <a href="mailto:support@wise.com">customer care support team<a>.
         </p>
-        <p>Thanks,<br />The Davheed Support Team</p>`
+        <br />
+        
+        <p>Thank you for choosing Wise.</p>
+        <p>The Wise Team</p>`
 	);
 };
